@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ResumeAI – Build Your Resume with AI</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1a2e4a;--blue:#2563eb;--blue2:#1d4ed8;--light-blue:#dbeafe;
+  --gray:#64748b;--light-gray:#f1f5f9;--white:#fff;--text:#1e293b;--border:#e2e8f0;
+  --green:#16a34a;--red:#dc2626;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',Arial,sans-serif;color:var(--text);background:var(--white);}
+
+/* NAV */
+nav{background:var(--navy);display:flex;justify-content:space-between;align-items:center;padding:0 40px;height:64px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.nav-logo{color:#fff;font-size:1.3rem;font-weight:800;letter-spacing:1px;}
+.nav-logo span{color:#60a5fa;}
+.nav-cta{background:var(--blue);color:#fff;border:none;padding:9px 22px;border-radius:6px;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s;}
+.nav-cta:hover{background:var(--blue2);}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1e40af 100%);color:#fff;padding:100px 40px 90px;text-align:center;}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:6px 18px;border-radius:20px;font-size:.82rem;margin-bottom:22px;letter-spacing:.5px;}
+.hero h1{font-size:3rem;font-weight:900;line-height:1.15;margin-bottom:18px;}
+.hero h1 span{color:#93c5fd;}
+.hero p{font-size:1.05rem;color:#bfdbfe;max-width:560px;margin:0 auto 36px;line-height:1.8;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:13px 30px;border-radius:6px;font-size:.95rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;transition:all .2s;display:inline-block;}
+.btn-primary{background:#fff;color:var(--navy);}
+.btn-primary:hover{background:#dbeafe;}
+.btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.5);}
+.btn-outline:hover{background:rgba(255,255,255,.1);}
+
+/* FEATURES */
+.features{padding:80px 40px;background:var(--light-gray);}
+.features h2{text-align:center;font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.features-sub{text-align:center;color:var(--gray);margin-bottom:50px;font-size:.95rem;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;max-width:960px;margin:0 auto;}
+.feature-card{background:#fff;border-radius:12px;padding:28px 24px;text-align:center;border:1px solid var(--border);transition:box-shadow .2s,transform .2s;}
+.feature-card:hover{box-shadow:0 6px 24px rgba(37,99,235,.1);transform:translateY(-4px);}
+.feature-icon{font-size:2rem;margin-bottom:14px;}
+.feature-card h4{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.feature-card p{font-size:.85rem;color:var(--gray);line-height:1.6;}
+
+/* HOW IT WORKS */
+.how{padding:80px 40px;max-width:960px;margin:0 auto;}
+.how h2{text-align:center;font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.how-sub{text-align:center;color:var(--gray);margin-bottom:50px;font-size:.95rem;}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
+.step{text-align:center;padding:20px;}
+.step-num{width:48px;height:48px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;margin:0 auto 14px;}
+.step h4{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.step p{font-size:.84rem;color:var(--gray);line-height:1.6;}
+
+/* BUILDER SECTION */
+.builder-section{padding:80px 40px;background:var(--light-gray);}
+.builder-section h2{text-align:center;font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.builder-sub{text-align:center;color:var(--gray);margin-bottom:40px;font-size:.95rem;}
+.builder-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+@media(max-width:800px){.builder-wrap{grid-template-columns:1fr;}}
+
+/* FORM PANEL */
+.form-panel{background:#fff;border-radius:14px;padding:32px;border:1px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05);}
+.form-panel h3{font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.form-panel p.hint{font-size:.83rem;color:var(--gray);margin-bottom:24px;line-height:1.6;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-size:.9rem;color:var(--text);font-family:inherit;transition:border .2s;background:#fff;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.form-group textarea{resize:vertical;min-height:90px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.generate-btn{width:100%;background:var(--blue);color:#fff;border:none;padding:13px;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.generate-btn:hover{background:var(--blue2);}
+.generate-btn:disabled{background:#93c5fd;cursor:not-allowed;}
+.spinner{width:18px;height:18px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error-msg{background:#fef2f2;border:1px solid #fecaca;color:var(--red);padding:10px 14px;border-radius:7px;font-size:.85rem;margin-top:12px;}
+
+/* PREVIEW PANEL */
+.preview-panel{background:#fff;border-radius:14px;padding:32px;border:1px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05);display:flex;flex-direction:column;}
+.preview-panel h3{font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.download-btn{background:var(--green);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:6px;}
+.download-btn:hover{background:#15803d;}
+.download-btn:disabled{background:#86efac;cursor:not-allowed;}
+.preview-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;color:var(--gray);text-align:center;}
+.preview-placeholder .p-icon{font-size:3rem;margin-bottom:16px;opacity:.4;}
+.preview-placeholder p{font-size:.9rem;max-width:220px;line-height:1.6;opacity:.7;}
+
+/* RESUME TEMPLATE */
+#resume-output{
+  /*display:none;*/
+  flex:1;overflow-y:auto;}
+#resume-print{background:#fff;padding:32px 36px;font-family:'Segoe UI',Arial,sans-serif;color:#1e293b;font-size:13px;line-height:1.5;}
+.r-header{border-bottom:3px solid #1a2e4a;padding-bottom:16px;margin-bottom:20px;}
+.r-name{font-size:22px;font-weight:900;color:#1a2e4a;letter-spacing:.5px;}
+.r-title{font-size:13px;color:#2563eb;font-weight:600;margin:3px 0 10px;}
+.r-contact{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:#64748b;}
+.r-contact span{display:flex;align-items:center;gap:4px;}
+.r-section{margin-bottom:18px;}
+.r-section-title{font-size:11px;font-weight:800;color:#1a2e4a;text-transform:uppercase;letter-spacing:1px;border-bottom:1.5px solid #e2e8f0;padding-bottom:5px;margin-bottom:10px;}
+.r-summary{font-size:12.5px;color:#475569;line-height:1.7;}
+.r-skills{display:flex;flex-wrap:wrap;gap:7px;}
+.r-skill{background:#dbeafe;color:#1e40af;padding:3px 10px;border-radius:4px;font-size:11.5px;font-weight:600;}
+.r-exp-item,.r-edu-item,.r-proj-item{margin-bottom:12px;}
+.r-exp-header,.r-edu-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;}
+.r-exp-role,.r-edu-degree{font-size:13px;font-weight:700;color:#1a2e4a;}
+.r-exp-company,.r-edu-school{font-size:12px;color:#2563eb;font-weight:600;}
+.r-date{font-size:11px;color:#64748b;white-space:nowrap;}
+.r-desc{font-size:12px;color:#475569;margin-top:4px;line-height:1.6;}
+.r-desc li{margin-left:16px;margin-top:2px;}
+.r-proj-name{font-size:13px;font-weight:700;color:#1a2e4a;}
+.r-proj-desc{font-size:12px;color:#475569;margin-top:3px;line-height:1.6;}
+
+/* FOOTER */
+footer{background:var(--navy);color:#94a3b8;text-align:center;padding:24px;font-size:.85rem;}
+footer span{color:#fff;font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Resume<span>AI</span></div>
+  <button class="nav-cta" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Build My Resume</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✨ Powered by Claude AI</div>
+  <h1>Build a <span>Professional Resume</span><br/>in Minutes</h1>
+  <p>Just describe your experience in plain words. Our AI transforms it into a clean, recruiter-ready resume instantly.</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">🚀 Build My Resume – Free</button>
+    <button class="btn btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features">
+  <h2>Why Choose ResumeAI?</h2>
+  <p class="features-sub">Everything you need to land your next job</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🤖</div><h4>AI-Powered</h4><p>Claude AI understands your experience and writes polished resume content for you.</p></div>
+    <div class="feature-card"><div class="feature-icon">⚡</div><h4>Instant Results</h4><p>Get a complete, professional resume in under 60 seconds — no sign-up required.</p></div>
+    <div class="feature-card"><div class="feature-icon">📄</div><h4>PDF Download</h4><p>Download your resume as a clean PDF, ready to send to employers directly.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎯</div><h4>ATS Friendly</h4><p>Clean formatting that passes Applicant Tracking Systems and gets you noticed.</p></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how" id="how">
+  <h2>How It Works</h2>
+  <p class="how-sub">Three simple steps to your perfect resume</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><h4>Fill Your Details</h4><p>Enter your basic info — name, contact, job title, and experience in plain language.</p></div>
+    <div class="step"><div class="step-num">2</div><h4>AI Generates</h4><p>Claude AI reads your input and creates a structured, professional resume instantly.</p></div>
+    <div class="step"><div class="step-num">3</div><h4>Preview & Download</h4><p>Review your resume in real-time and download it as a PDF with one click.</p></div>
+  </div>
+</div>
+
+<!-- BUILDER -->
+<div class="builder-section" id="builder">
+  <h2>Build Your Resume</h2>
+  <p class="builder-sub">Fill in the form and let AI do the heavy lifting</p>
+  <div class="builder-wrap">
+
+    <!-- FORM -->
+    <div class="form-panel">
+      <h3>📝 Your Information</h3>
+      <p class="hint">Fill in as much or as little as you like — AI will enhance and structure everything for you.</p>
+      <div class="form-group">
+        <label>🔑 Anthropic API Key *</label>
+        <input type="password" id="f-apikey" placeholder="gsk_...  (get yours free at console.groq.com)"/>
+        <div style="font-size:.78rem;color:var(--gray);margin-top:4px;">Get a free key at <strong>console.groq.com</strong> → API Keys. Never stored or shared.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="f-name" placeholder="e.g. Raj Patel"/></div>
+        <div class="form-group"><label>Job Title *</label><input type="text" id="f-title" placeholder="e.g. Software Engineer"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="raj@email.com"/></div>
+        <div class="form-group"><label>Phone</label><input type="text" id="f-phone" placeholder="+91 98765 43210"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Location</label><input type="text" id="f-location" placeholder="Ahmedabad, India"/></div>
+        <div class="form-group"><label>LinkedIn / GitHub (optional)</label><input type="text" id="f-links" placeholder="linkedin.com/in/rajpatel"/></div>
+      </div>
+      <div class="form-group">
+        <label>Work Experience 🤖</label>
+        <textarea id="f-experience" placeholder="Describe your work experience in plain words. e.g. I worked at TCS for 3 years as a backend developer. I built REST APIs using Node.js, managed databases, and led a team of 4 developers. Before that I interned at a startup where I built React dashboards."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Skills 🤖</label>
+        <textarea id="f-skills" placeholder="List your skills or describe them. e.g. I know JavaScript, React, Node.js, Python, SQL, and some AWS. I'm also good at communication and teamwork." style="min-height:70px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Education 🤖</label>
+        <textarea id="f-education" placeholder="e.g. I did my B.Tech in Computer Science from GTU in 2019 with 8.5 CGPA. Also completed 12th from DPS with 89%." style="min-height:70px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Projects (optional) 🤖</label>
+        <textarea id="f-projects" placeholder="e.g. I built an e-commerce website using React and Node.js with payment integration. Also made a chat app using Socket.io." style="min-height:70px;"></textarea>
+      </div>
+      <button class="generate-btn" id="gen-btn" onclick="generateResume()">
+        <span id="btn-text">✨ Generate My Resume with AI</span>
+        <div class="spinner" id="spinner" style="display:none;"></div>
+      </button>
+      <div id="error-box" style="display:none;" class="error-msg"></div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-panel">
+      <h3>
+        👁️ Resume Preview
+        <button class="download-btn" id="dl-btn" onclick="downloadPDF()" disabled>⬇ Download PDF</button>
+      </h3>
+      <div class="preview-placeholder" id="placeholder">
+        <div class="p-icon">📄</div>
+        <p>Your AI-generated resume will appear here after you click Generate.</p>
+      </div>
+      <div id="resume-output">
+        <div id="resume-print"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>ResumeAI</span> · Built with Claude AI · Helping professionals land their dream jobs 🚀</p>
+</footer>
+
+<script>
+async function generateResume() {
+  const apiKey = document.getElementById('f-apikey').value.trim();
+  const name = document.getElementById('f-name').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  if (!apiKey) { showError('Please enter your Anthropic API key.'); return; }
+  if (!name || !title) { showError('Please enter at least your Full Name and Job Title.'); return; }
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const location = document.getElementById('f-location').value.trim();
+  const links = document.getElementById('f-links').value.trim();
+  const experience = document.getElementById('f-experience').value.trim();
+  const skills = document.getElementById('f-skills').value.trim();
+  const education = document.getElementById('f-education').value.trim();
+  const projects = document.getElementById('f-projects').value.trim();
+
+  setLoading(true);
+  hideError();
+
+  const prompt = `You are a professional resume writer. Based on the user's information below, generate a structured resume in JSON format ONLY. No extra text, no markdown, just a valid JSON object.
+
+User Info:
+- Name: ${name}
+- Job Title: ${title}
+- Email: ${email || 'not provided'}
+- Phone: ${phone || 'not provided'}
+- Location: ${location || 'not provided'}
+- Links: ${links || 'not provided'}
+- Experience: ${experience || 'not provided'}
+- Skills: ${skills || 'not provided'}
+- Education: ${education || 'not provided'}
+- Projects: ${projects || 'not provided'}
+
+Return ONLY this JSON structure (no markdown, no backticks, just raw JSON):
+{
+  "name": "...",
+  "title": "...",
+  "contact": { "email": "...", "phone": "...", "location": "...", "links": "..." },
+  "summary": "2-3 sentence professional summary",
+  "skills": ["skill1", "skill2", ...],
+  "experience": [
+    { "role": "...", "company": "...", "date": "...", "points": ["...", "..."] }
+  ],
+  "education": [
+    { "degree": "...", "school": "...", "year": "...", "detail": "..." }
+  ],
+  "projects": [
+    { "name": "...", "description": "..." }
+  ]
+}
+
+Rules:
+- Write bullet points professionally, starting with action verbs
+- If info is missing or 'not provided', omit that field or leave array empty
+- Skills should be individual skill names
+- Keep it concise and ATS-friendly`;
+
+  try {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', `Bearer ${apiKey}`);
+
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 1500,
+        temperature: 0.7,
+        messages: [
+          { role: 'system', content: 'You are a professional resume writer. Always respond with valid raw JSON only. No markdown, no backticks, no explanation.' },
+          { role: 'user', content: prompt }
+        ]
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'API error');
+    const text = data.choices?.[0]?.message?.content || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const resume = JSON.parse(clean);
+    renderResume(resume);
+  } catch(e) {
+    showError('Something went wrong: ' + e.message + '. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function renderResume(r) {
+  const c = r.contact || {};
+  const contacts = [
+    c.email && `<span>✉ ${c.email}</span>`,
+    c.phone && `<span>📞 ${c.phone}</span>`,
+    c.location && `<span>📍 ${c.location}</span>`,
+    c.links && c.links !== 'not provided' && `<span>🔗 ${c.links}</span>`
+  ].filter(Boolean).join('');
+
+  const skills = (r.skills||[]).map(s=>`<span class="r-skill">${s}</span>`).join('');
+
+  const exp = (r.experience||[]).map(e=>`
+    <div class="r-exp-item">
+      <div class="r-exp-header">
+        <div><div class="r-exp-role">${e.role||''}</div><div class="r-exp-company">${e.company||''}</div></div>
+        <div class="r-date">${e.date||''}</div>
+      </div>
+      ${e.points&&e.points.length?`<ul class="r-desc">${e.points.map(p=>`<li>${p}</li>`).join('')}</ul>`:''}
+    </div>`).join('');
+
+  const edu = (r.education||[]).map(e=>`
+    <div class="r-edu-item">
+      <div class="r-edu-header">
+        <div><div class="r-edu-degree">${e.degree||''}</div><div class="r-edu-school">${e.school||''}</div></div>
+        <div class="r-date">${e.year||''}</div>
+      </div>
+      ${e.detail?`<div class="r-desc">${e.detail}</div>`:''}
+    </div>`).join('');
+
+  const proj = (r.projects||[]).filter(p=>p.name).map(p=>`
+    <div class="r-proj-item">
+      <div class="r-proj-name">${p.name}</div>
+      <div class="r-proj-desc">${p.description||''}</div>
+    </div>`).join('');
+
+  document.getElementById('resume-print').innerHTML = `
+    <div class="r-header">
+      <div class="r-name">${r.name||''}</div>
+      <div class="r-title">${r.title||''}</div>
+      ${contacts?`<div class="r-contact">${contacts}</div>`:''}
+    </div>
+    ${r.summary?`<div class="r-section"><div class="r-section-title">Professional Summary</div><div class="r-summary">${r.summary}</div></div>`:''}
+    ${skills?`<div class="r-section"><div class="r-section-title">Skills</div><div class="r-skills">${skills}</div></div>`:''}
+    ${exp?`<div class="r-section"><div class="r-section-title">Work Experience</div>${exp}</div>`:''}
+    ${edu?`<div class="r-section"><div class="r-section-title">Education</div>${edu}</div>`:''}
+    ${proj?`<div class="r-section"><div class="r-section-title">Projects</div>${proj}</div>`:''}
+  `;
+  document.getElementById('placeholder').style.display = 'none';
+  const out = document.getElementById('resume-output');
+  out.style.display = 'block';
+  document.getElementById('dl-btn').disabled = false;
+}
+
+async function downloadPDF() { const el = document.getElementById('resume-print'); const btn = document.getElementById('dl-btn'); btn.disabled = true; btn.innerHTML = 'Generating PDF...'; const name = document.getElementById('f-name').value.trim() || 'resume'; try { const opt = { margin: 10, filename: `${name.replace(/\s+/g, '_')}_Resume.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }; await html2pdf().set(opt).from(el).save(); } catch (err) { console.error(err); alert('PDF generation failed.'); } finally { btn.disabled = false; btn.innerHTML = '⬇ Download PDF'; } }
+
+function setLoading(on) {
+  const btn = document.getElementById('gen-btn');
+  const txt = document.getElementById('btn-text');
+  const sp = document.getElementById('spinner');
+  btn.disabled = on;
+  txt.textContent = on ? 'AI is generating your resume...' : '✨ Generate My Resume with AI';
+  sp.style.display = on ? 'block' : 'none';
+}
+function showError(msg) {
+  const b = document.getElementById('error-box');
+  b.style.display = 'block';
+  b.textContent = msg;
+}
+function hideError() {
+  document.getElementById('error-box').style.display = 'none';
+}
+</script>
+</body>
+</html>
