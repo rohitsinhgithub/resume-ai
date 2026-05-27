@@ -172,11 +172,11 @@ footer span{color:#fff;font-weight:700;}
     <div class="form-panel">
       <h3>📝 Your Information</h3>
       <p class="hint">Fill in as much or as little as you like — AI will enhance and structure everything for you.</p>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>🔑 Anthropic API Key *</label>
         <input type="hidden" id="f-apikey" placeholder="gsk_...  (get yours free at console.groq.com)"/>
         <div style="font-size:.78rem;color:var(--gray);margin-top:4px;">Get a free key at <strong>console.groq.com</strong> → API Keys. Never stored or shared.</div>
-      </div>
+      </div> -->
 
       <div class="form-row">
         <div class="form-group"><label>Full Name *</label><input type="text" id="f-name" placeholder="e.g. Raj Patel"/></div>
@@ -242,7 +242,7 @@ async function generateResume() {
   const apiKey = "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";
   const name = document.getElementById('f-name').value.trim();
   const title = document.getElementById('f-title').value.trim();
-  if (!apiKey) { showError('Please enter your Anthropic API key.'); return; }
+  // if (!apiKey) { showError('Please enter your Anthropic API key.'); return; }
   if (!name || !title) { showError('Please enter at least your Full Name and Job Title.'); return; }
   const email = document.getElementById('f-email').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
